@@ -70,33 +70,28 @@ All products have a packshot asset_collection attribute which handles the produc
 Also a product_labels text attribute has been also added, this field will receive the detected labels from the app. It's empty by default.
 
 
-## Step 5 : Start coding a service class
+## Step 5 : Coding a central service class
 
-In that step we will code a little Service class, GoogleVisionService to create in the Service Folder.
+In that step we will code a Service class in the Service Folder, GoogleVisionService.
 Here is the class diagram :
 
-```
------------------------------------------------------------------------
-|                         GoogleVisionService                         |
------------------------------------------------------------------------
-| - clientFactory: PimApiClientFromTenantFactory                      |
------------------------------------------------------------------------
-| + GoogleVisionService(clientFactory: PimApiClientFromTenantFactory) |
-| + detectLabelsOnProductImages(tenant: Tenant): void                 |
-| - getLabelsForImage(imagePath: string): array                       |
------------------------------------------------------------------------
-```
+![classDiagram.png](classDiagram.png)
 
-The PimApiClientFromTenantFactory clientFactory attribute is injected through the constructor. It will help us later by giving us an API client based on the tenant.
+In order to cover the use case presented in the introduction we will implement each step in a dedicated method, each steps will be piloted from a central main method called **detectLabelsOnProductImages**
 
-The private method getLabelsForImage will receive an image path as argument and then it will call the Google Vision API to retrieve the labels.
-To help you coding the method logic you can get inspiaration from what is presented here : https://cloud.google.com/vision/docs/samples/vision-label-detection?#vision_label_detection-php
+* The **PimApiClientFromTenantFactory** clientFactory attribute is "injected" through the constructor. 
+This Factory object will give us the ability to generate an API client based on the current tenant.
 
-The detectLabelsOnProductImages method will ask the clientFactory to give a PIM API Client based on the Tenant argument, 
-then we will retreive products with an asset image (packshot not empty), and no labels (product_labels empty).
-Then for each products you will get the asset image, storing it locally and then make a call to the getLabelsForImage method to retreive the labels.
-Finnaly you will make a product update API request with the labels separated by a comma.
+* The private method **getLabelsForImage** receives an image path as argument, and then it will call the Google Vision API to retrieve the labels.
+To code the method logic you can find the inspiration from what is presented here : https://cloud.google.com/vision/docs/samples/vision-label-detection?#vision_label_detection-php
 
+* The **detectLabelsOnProductImages** method will use the clientFactory attribute to retrieve a PIM API Client based on the Tenant argument, 
+With that client we will use the **ProductAPI** to list the products in a specific family filtered by the following criteria : asset collection attribute defined (packshot not empty), and no detected labels yet (product_labels empty).
+Then, for each product, you will need to request the **AssetManagerAPI** for downloading locally the asset image [show documentation](https://api.akeneo.com/php-client/resources.html#asset-media-file) (Tip: extract the asset Family Code before from the **AttributeApi** by getting the packshot attribute and extracting the reference_data_name property).
+Store the image data in a local temp file (use [tempnam](https://www.php.net/manual/function.tempnam.php)) and make a call to the getLabelsForImage method to retrieve the labels.
+Finally, you will make a product update API request with the labels separated by a comma.
+
+Correction => [GoogleVisionService.php](GoogleVisionService.php)
 
 ## Step 6: Update the product list page
 From the product list page add a button on each product that triggers an Action (Ajax ?) which will retrieve the product image, storing it in a temp file, calls the CloudVision service method to retrieve tags and push the result back to the PIM.
