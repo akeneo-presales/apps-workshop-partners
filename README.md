@@ -37,7 +37,7 @@ Before you begin, ensure that you have the following installed on your developme
     ```
 6. Check that the app is running by opening the following url : http://localhost:8044
 
-## Step 2: Connect the app to your PIM
+### Connect the app to your PIM
 
 **Requirements:**
 - You have a [PIM developer sandbox](https://api.akeneo.com/apps/overview.html#app-developer-starter-kit)
@@ -48,7 +48,9 @@ Before you begin, ensure that you have the following installed on your developme
 - Once the app registered in the PIM, you can [Connect to your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-4-run-your-local-app), then you will be prompted to register your PIM environment by providing the client id and the client secret you get on the previous step
 
 
-## Step 3: Install Third-Party API Client and add Service Account configuration
+## Step 2: Install Third-Party API Client and add Service Account configuration
+
+### Add the google/cloud-vision dependency
 
 In this step, you will install the Third-Party API client for addressing the Google Vision API, which will be used in your custom app. 
 Follow the steps below to integrate the client into your project:
@@ -62,20 +64,14 @@ Follow the steps below to integrate the client into your project:
 
 Now you have successfully installed the Third-Party API client for addressing the Google AI Generative API within your Dockerized Akeneo PIM app. Proceed to the next steps to configure and utilize this client within your custom app.
 
-## Step 4: install Google Cloud Service Account
+### install Google Cloud Service Account
 in order to request the Google Cloud Vision API, the Google Client should be authenticated, 
 to do so we will use a Service account that has rights to request the Google Cloud Vision Service.
 We will provide you it's content for the time of the workshop.
 
 Copy the service account credentials json key into a service_account.json file at the root of the project.
 
-## Few information about the PIM catalog Structure
-
-All products have a **packshot** asset_collection attribute which handles the product images.
-
-Also a **product_tags** textarea attribute has been also added, this field will receive the detected labels from the app.
-
-## Step 5 : Coding a central service class
+## Step 3 : Coding a central service class
 
 In that step we will code a Service class in the Service Folder, GoogleVisionService.
 Here is the class diagram :
@@ -98,14 +94,14 @@ Finally, you will make a product update API request with the labels separated by
 
 Correction => [GoogleVisionService.php](GoogleVisionService.php)
 
-## Step 6: Update the product list page
+## Step 4: Update the product list page
 
 Create a new Symfony action with a dedicated route where you will use the GoogleVisionService detectLabelsOnProductImages method 
 
 Call this route from the Detect Tags button situated on the products list page
 
 
-## Step 7: Create a Commandline action
+## Step 5: Create a Commandline action
 
 Create a new Symfony command **products:detect-tags** where you will use the GoogleVisionService detectLabelsOnProductImages method on each tenant registered onto the instance.
 
@@ -115,3 +111,8 @@ This command could be triggerd mannually through a shell console :
 
 `docker exec -it workshopApp bin/console products:detect-tags`
 
+## Information about the PIM catalog Structure
+
+All products have a **packshot** asset_collection attribute which handles the product images.
+
+Also a **product_tags** textarea attribute has been also added, this field will receive the detected labels from the app.
