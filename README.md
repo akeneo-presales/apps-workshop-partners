@@ -71,9 +71,9 @@ Copy the service account credentials json key into a service_account.json file a
 
 ## Few information about the PIM catalog Structure
 
-All products have a packshot asset_collection attribute which handles the product images.
+All products have a **packshot** asset_collection attribute which handles the product images.
 
-Also a product_tags textarea attribute has been also added, this field will receive the detected labels from the app.
+Also a **product_tags** textarea attribute has been also added, this field will receive the detected labels from the app.
 
 ## Step 5 : Coding a central service class
 
@@ -99,11 +99,19 @@ Finally, you will make a product update API request with the labels separated by
 Correction => [GoogleVisionService.php](GoogleVisionService.php)
 
 ## Step 6: Update the product list page
-From the product list page add a button on each product that triggers an Action (Ajax ?) which will retrieve the product image, storing it in a temp file, calls the CloudVision service method to retrieve tags and push the result back to the PIM.
+
+Create a new Symfony action with a dedicated route where you will use the GoogleVisionService detectLabelsOnProductImages method 
+
+Call this route from the Detect Tags button situated on the products list page
 
 
 ## Step 7: Create a Commandline action
 
-An action available from the command line can be triggered manually or automatically by a crontab configuration, it requires an access token to be able to discuss with the PIM
+Create a new Symfony command **products:detect-tags** where you will use the GoogleVisionService detectLabelsOnProductImages method on each tenant registered onto the instance.
 
+you can be inspired by the ExampleCommand class situated in src/Command to create your own command.
+
+This command could be triggerd mannually through a shell console :
+
+`docker exec -it workshopApp bin/console products:detect-tags`
 
