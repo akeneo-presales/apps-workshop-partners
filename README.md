@@ -10,8 +10,8 @@ in order to extract labels from product images and assign these identified label
 ## Step 1 - Initialization : 
 
 ### Checkout the Demo App Skeleton :
-In this step, you'll need to clone the Akeneo PIM Demo App Skeleton from the provided GitHub repository. 
-This app skeleton will serve as the foundation for your custom app. 
+In this step, you'll need to download the latest Release from the Akeneo PIM Workshop App from the provided GitHub repository. 
+This app will serve as the foundation for your custom app. 
 Follow the steps below to get started:
 
 ### Prerequisites
@@ -24,12 +24,17 @@ Before you begin, ensure that you have the following installed on your developme
 ### Steps
 1. Open your terminal or command prompt.
 2. Navigate to the directory where you want to store your project.
-3. Download the latest release of the Akeneo PIM Demo App Skeleton repository from that url https://github.com/akeneo-presales/app-skeleton
+3. Download the latest release of the Akeneo PIM Workshop App repository from that url https://github.com/akeneo-presales/WorkshopCustomApp/releases
 4. Unzip the archive
-5. Start the docker stack by running the following command from the project root directory :
-```
-docker-compose up -d
-```
+5. Start the docker stack by running the following script from the project root directory :
+    - For Linux / MacOS
+    ```
+    ./start.sh
+    ```
+   - For Windows
+    ```
+    ./start.bat
+    ```
 6. Check that the app is running by opening the following url : http://localhost:8044
 
 ## Step 2: Connect the app to your PIM
@@ -52,14 +57,15 @@ Follow the steps below to integrate the client into your project:
 2. Run the following command within your Docker container to install the Google AI Generative API client using Composer:
 
     ``bash
-    docker exec -it presalesApp_web composer require google/cloud-vision
+    docker exec -it workshopApp_web composer require google/cloud-vision
     ``
 
 Now you have successfully installed the Third-Party API client for addressing the Google AI Generative API within your Dockerized Akeneo PIM app. Proceed to the next steps to configure and utilize this client within your custom app.
 
 ## Step 4: install Google Cloud Service Account
-in order to request the Google Cloud Vision API, the Google Client should be authenticates, 
-to do so we will use a Service account.
+in order to request the Google Cloud Vision API, the Google Client should be authenticated, 
+to do so we will use a Service account that has rights to request the Google Cloud Vision Service.
+We will provide you it's content for the time of the workshop.
 
 Copy the service account credentials json key into a service_account.json file at the root of the project.
 
@@ -67,8 +73,7 @@ Copy the service account credentials json key into a service_account.json file a
 
 All products have a packshot asset_collection attribute which handles the product images.
 
-Also a product_labels text attribute has been also added, this field will receive the detected labels from the app. It's empty by default.
-
+Also a product_tags textarea attribute has been also added, this field will receive the detected labels from the app.
 
 ## Step 5 : Coding a central service class
 
