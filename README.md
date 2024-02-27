@@ -19,7 +19,7 @@ Follow the steps below to get started:
 Before you begin, ensure that you have the following installed on your development environment:
 
 * Git client : https://git-scm.com/downloads
-* Docker Desktop : https://www.docker.com/products/docker-desktop/
+* Docker Desktop : https://www.docker.com/products/docker-desktop/ : Once installed  => start it
 
 ### Steps
 1. Open your terminal or command prompt.
@@ -30,6 +30,10 @@ Before you begin, ensure that you have the following installed on your developme
     - For Linux / MacOS
     ```
     ./start.sh
+    ```
+    - For Linux / MacOS (ARM64)
+    ```
+    ./start_arm64.sh
     ```
    - For Windows
     ```
