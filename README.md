@@ -27,7 +27,7 @@ Before you begin, ensure that you have the following installed on your developme
 3. Download the latest release of the Akeneo PIM Workshop App repository from that url https://github.com/akeneo-presales/WorkshopCustomApp/releases
 4. Unzip the archive
 5. Start the docker stack by running the following script from the project root directory :
-    - For Linux / MacOS
+    - For Linux / MacOS (Intel x86)
     ```
     ./start.sh
     ```
