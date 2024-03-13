@@ -41,13 +41,13 @@ Before you begin, ensure that you have the following installed on your developme
     ```
 6. Check that the app is running by opening the following url : http://localhost:8044
 
-### Configure the OAuth Scopes required by the App
+## Step 2 - Configure the OAuth Scopes required by the App
 
 An Akeneo Custom App should declare the OAuth scopes that are needed for its execution.
 These scopes are declared In the Activate step.
 Edit the ActivateAction Controller class where you'll find all the informations about it
 
-### Connect the app to your PIM
+## Step 3 - Connect the app to your PIM
 
 **Requirements:**
 - You have a [PIM developer sandbox](https://api.akeneo.com/apps/overview.html#app-developer-starter-kit)
@@ -59,11 +59,11 @@ Edit the ActivateAction Controller class where you'll find all the informations 
 - Once the app registered in the PIM, you can [Connect to your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-4-run-your-local-app)
 - then you will be prompted to register your PIM environment by providing the client id and the client secret you get on the previous step
 
-## Step 2: Configure and activate a Catalog
+## Step 4: Configure and activate a Catalog
 
 Going back to the PIM we have 
 
-## Step 2: Install Third-Party API Client and add Service Account configuration
+## Step 5: Install Third-Party API Client and add Service Account configuration
 
 ### Add the google/cloud-vision dependency
 
