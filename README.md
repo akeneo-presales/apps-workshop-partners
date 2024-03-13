@@ -82,7 +82,8 @@ final class ActivateAction extends AbstractController
 
 ## Step 4: Configure and activate a Catalog
 
-Going back to the PIM we have 
+Going back to the PIM we have to enable the catalog for our app.
+Adding a filter on the family to retrieve only the products we wants.
 
 ## Step 5: Install Third-Party API Client and add Service Account configuration
 
@@ -113,6 +114,27 @@ Copy the service account credentials json key into a service_account.json file a
 In order to cover the use case presented in the introduction we will code a few things
 * The private method **getLabelsForImage** receives an image path as argument, and then it will call the Google Vision API to retrieve the labels.
 To code the method logic you can find the inspiration from what is presented here : https://cloud.google.com/vision/docs/samples/vision-label-detection?#vision_label_detection-php
+
+````php
+ private function getLabelsForImage($imagePath)
+    {
+        $image = file_get_contents($this->projectDir.'/public/'.$imagePath);
+
+        $result = [];
+
+        /* NOW IT'S YOUR TIME TO CODE!!
+        BE INSPIRED BY THIS GOOGLE DOCUMENTATION PAGE
+        https://cloud.google.com/vision/docs/samples/vision-label-detection
+        */
+        $imageAnnotator = new ImageAnnotatorClient(['credentials'=>$this->projectDir.'/service_account.json']);
+
+        /*
+        END OF YOUR CODE
+        */
+
+        return $result;
+    }
+````
 
 ## Step 4: Update the product list page
 
