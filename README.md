@@ -47,6 +47,27 @@ An Akeneo Custom App should declare the OAuth scopes that are needed for its exe
 These scopes are declared In the Activate step.
 Edit the ActivateAction Controller class where you'll find all the informations about it
 
+````php
+final class ActivateAction extends AbstractController
+{
+    /* List the oAuth scopes required by your app
+    In our case we need to complete the list by adding the following scopes :
+    Read and write products, Read assets and asset families
+    See the documentation here :
+    https://api.akeneo.com/apps/authentication-and-authorization.html#available-authorization-scopes
+*/
+    private const OAUTH_SCOPES = [
+        'read_catalog_structure',
+        'read_channel_localization',
+        'read_channel_settings',
+        'read_catalogs',
+        'openid',
+        'profile',
+        'email',
+    ];
+
+````
+
 ## Step 3 - Connect the app to your PIM
 
 **Requirements:**
