@@ -132,7 +132,7 @@ $mediaContent ='';
       * See this documentation to find out how to do it
       * https://api.akeneo.com/php-client/resources.html#asset-media-file
       */
-     $mediaContent = '';
+     $mediaContent = '???';
 
      $tempFile = tempnam('/tmp', 'assetGoogleVision');
      file_put_contents($tempFile, $mediaContent);
