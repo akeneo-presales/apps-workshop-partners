@@ -109,7 +109,7 @@ in order to request the Google Cloud Vision API, the Google Client should be aut
 to do so we will use a Service account that has rights to request the Google Cloud Vision Service.
 We will provide you it's content for the time of the workshop.
 
-Copy the service account credentials json key into a service_account.json file at the root of the project.
+Copy the service account credentials json key into a ***service_account.json*** file at the root of the project.
 
 
 ## Step 3 : Coding
