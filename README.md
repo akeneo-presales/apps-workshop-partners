@@ -111,10 +111,35 @@ Copy the service account credentials json key into a service_account.json file a
 
 ## Step 3 : Coding
 
-In order to cover the use case presented in the introduction we will code a few things
-* The private method **getLabelsForImage** receives an image path as argument, and then it will call the Google Vision API to retrieve the labels.
-To code the method logic you can find the inspiration from what is presented here : https://cloud.google.com/vision/docs/samples/vision-label-detection?#vision_label_detection-php
+In order to cover the use case presented in the introduction we will code a few things.
+All that we will need to do will be centralized in a single Service Class : GoogleVisionService
+the central method is detectLabelsOnProductImages, in that method we request the products through the catalog connection.
+Foreach products that have their packshot asset collection described do the following :
+- 3.1 Extract the image
+in the **extractAssetImage** method implement the download of an asset content through the api
+````php
+private function extractAssetImage(AkeneoPimClientInterface $client, string $assetDataCode)
+{
+$mediaContent ='';
 
+     /*
+      * CODING
+      * Extract the asset media datas (image binary data) from the ÀPI
+      * store these data into the mediaContent var
+      * See this documentation to find out how to do it
+      * https://api.akeneo.com/php-client/resources.html#asset-media-file
+      */
+     $mediaContent = '';
+
+     $tempFile = tempnam('/tmp', 'assetGoogleVision');
+     file_put_contents($tempFile, $mediaContent);
+
+     return $tempFile;
+}
+````
+- 3.2 Call the Google Vision Service to detect labels over the image
+the method **getLabelsForImage** receives an image path as argument. 
+Code the little logic to call the Google Vision API to retrieve the labels and store them in the result array.
 ````php
  private function getLabelsForImage($imagePath)
     {
@@ -135,23 +160,33 @@ To code the method logic you can find the inspiration from what is presented her
         return $result;
     }
 ````
+- 3.3 Update the product product_tags attribute with the detected labels value by using the API client
 
-## Step 4: Update the product list page
+````php
 
-Create a new Symfony action with a dedicated route where you will use the GoogleVisionService detectLabelsOnProductImages method 
+    private function updateProduct(AkeneoPimClientInterface $client, mixed $productUuid, array $labels, ?string $locale = 'en_US', ?string $scope = 'ecommerce')
+    {
 
-Call this route from the Detect Tags button situated on the products list page
+        $product = [
+            'uuid' => $productUuid,
+            'values' => [
+                // update product_tags attribute
+            ]
+        ];
 
+        /*
+         * CODING
+         * Update the product using its UUID with the tags that we retrieved from Google Vision API
+         * See the documentation :
+         * https://api.akeneo.com/php-client/resources.html#upsert-a-product-2
+         */
 
-## Step 5: Create a Commandline action
+        $response = '???';
+        $response = $client->getProductUuidApi()->upsert($productUuid, $product);
 
-Create a new Symfony command **products:detect-tags** where you will use the GoogleVisionService detectLabelsOnProductImages method on each tenant registered onto the instance.
-
-you can be inspired by the ExampleCommand class situated in src/Command to create your own command.
-
-This command could be triggerd mannually through a shell console :
-
-`docker exec -it workshopApp bin/console products:detect-tags`
+        $this->checkUpsertResponse($response);
+    }
+````
 
 ## Information about the PIM catalog Structure
 
