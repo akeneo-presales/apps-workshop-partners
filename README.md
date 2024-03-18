@@ -185,7 +185,6 @@ Code the little logic to call the Google Vision API to retrieve the labels and s
          */
 
         $response = '???';
-        $response = $client->getProductUuidApi()->upsert($productUuid, $product);
 
         $this->checkUpsertResponse($response);
     }
