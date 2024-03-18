@@ -57,6 +57,9 @@ final class ActivateAction extends AbstractController
     https://api.akeneo.com/apps/authentication-and-authorization.html#available-authorization-scopes
 */
     private const OAUTH_SCOPES = [
+        //add missing scopes
+        'write_catalogs',
+        'write_catalog_structure',
         'read_catalog_structure',
         'read_channel_localization',
         'read_channel_settings',
