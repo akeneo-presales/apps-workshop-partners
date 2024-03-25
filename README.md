@@ -41,7 +41,23 @@ Before you begin, ensure that you have the following installed on your developme
     ```
 6. Check that the app is running by opening the following url : http://localhost:8044
 
-## Step 2 - Configure the OAuth Scopes required by the App
+## Step 2 - Connect the app to your PIM
+
+**Requirements:**
+- You have a [PIM developer sandbox](https://api.akeneo.com/apps/overview.html#app-developer-starter-kit)
+
+**Steps:**
+- Run Ngrok to obtain a temporary public URL for your local app, to do so run : ``ngrok http 8044``!
+![ngrok.png](ngrok.png)
+- [Register your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-3-declare-your-local-app-as-a-custom-app-in-your-sandbox-to-generate-credentials) to generates and receive the credentials, the activate url is : https://your-ngrok-url/ and the callback url is https://your-ngrok-url/callback
+- Once the app registered in the PIM, you can [Connect to your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-4-run-your-local-app)
+- then you will be prompted to register your PIM environment by providing the client id and the client secret you get on the previous step
+
+## Step 3: Create a Catalog for the App
+
+Explanation of what is a catalog
+
+## Step 4 - Configure the OAuth Scopes required by the App
 
 An Akeneo Custom App should declare the OAuth scopes that are needed for its execution.
 These scopes are declared In the Activate step.
@@ -71,24 +87,12 @@ final class ActivateAction extends AbstractController
 
 ````
 
-## Step 3 - Connect the app to your PIM
-
-**Requirements:**
-- You have a [PIM developer sandbox](https://api.akeneo.com/apps/overview.html#app-developer-starter-kit)
-
-**Steps:**
-- Run Ngrok to obtain a temporary public URL for your local app, to do so run : ``ngrok http 8044``!
-![ngrok.png](ngrok.png)
-- [Register your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-3-declare-your-local-app-as-a-custom-app-in-your-sandbox-to-generate-credentials) to generates and receive the credentials, the activate url is : https://your-ngrok-url/ and the callback url is https://your-ngrok-url/callback
-- Once the app registered in the PIM, you can [Connect to your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-4-run-your-local-app)
-- then you will be prompted to register your PIM environment by providing the client id and the client secret you get on the previous step
-
-## Step 4: Configure and activate a Catalog
+## Step 5: Configure and activate a Catalog
 
 Going back to the PIM we have to enable the catalog for our app.
 Adding a filter on the family to retrieve only the products we wants.
 
-## Step 5: Install Third-Party API Client and add Service Account configuration
+## Step 6: Install Third-Party API Client and add Service Account configuration
 
 ### Add the google/cloud-vision dependency
 
@@ -112,7 +116,7 @@ We will provide you it's content for the time of the workshop.
 Copy the service account credentials json key into a ***service_account.json*** file at the root of the project.
 
 
-## Step 3 : Coding
+## Step 7 : Coding
 
 In order to cover the use case presented in the introduction we will code a few things.
 All that we will need to do will be centralized in a single Service Class : GoogleVisionService
