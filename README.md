@@ -7,7 +7,7 @@ in order to extract labels from product images and assign these identified label
 ![diagram.png](diagram.png)
 
 
-## Step 1 - Initialization : 
+## 1 - Initialization : 
 
 ### Checkout the Demo App Skeleton :
 In this step, you'll need to download the latest Release from the Akeneo PIM Workshop App from the provided GitHub repository. 
@@ -41,23 +41,24 @@ Before you begin, ensure that you have the following installed on your developme
     ```
 6. Check that the app is running by opening the following url : http://localhost:8044
 
-## Step 2 - Connect the app to your PIM
+## 2 - Connect the app to your PIM
 
-**Requirements:**
+### Requirements:
 - You have a [PIM developer sandbox](https://api.akeneo.com/apps/overview.html#app-developer-starter-kit)
+- Your Custom APP is accessible from the PIM. To Open your local App to the Internet we will use [NGROK](https://ngrok.com/download).
 
-**Steps:**
+### Steps:
 - Run Ngrok to obtain a temporary public URL for your local app, to do so run : ``ngrok http 8044``!
 ![ngrok.png](ngrok.png)
 - [Register your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-3-declare-your-local-app-as-a-custom-app-in-your-sandbox-to-generate-credentials) to generates and receive the credentials, the activate url is : https://your-ngrok-url/ and the callback url is https://your-ngrok-url/callback
 - Once the app registered in the PIM, you can [Connect to your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-4-run-your-local-app)
 - then you will be prompted to register your PIM environment by providing the client id and the client secret you get on the previous step
 
-## Step 3: Create a Catalog for the App
+## 3: Create a Catalog for the App
 
 Explanation of what is a catalog
 
-## Step 4 - Configure the OAuth Scopes required by the App
+## 4 - Configure the OAuth Scopes required by the App
 
 An Akeneo Custom App should declare the OAuth scopes that are needed for its execution.
 These scopes are declared In the Activate step.
@@ -68,18 +69,18 @@ final class ActivateAction extends AbstractController
 {
     /* List the oAuth scopes required by your app
     In our case we need to complete the list by adding the following scopes :
-    Read and write products, Read assets and asset families
-    See the documentation here :
+    Read products
+    Write products,
+    Read assets
+    Read asset families,
+    Read calalog Structure,
+    Read Catalogs,
+    Write Catalogs
+    See the documentation here to find out the missing scopes:
     https://api.akeneo.com/apps/authentication-and-authorization.html#available-authorization-scopes
 */
     private const OAUTH_SCOPES = [
-        //add missing scopes
-        'write_catalogs',
-        'write_catalog_structure',
-        'read_catalog_structure',
-        'read_channel_localization',
-        'read_channel_settings',
-        'read_catalogs',
+        //add missing scopes here
         'openid',
         'profile',
         'email',
@@ -87,12 +88,12 @@ final class ActivateAction extends AbstractController
 
 ````
 
-## Step 5: Configure and activate a Catalog
+## 5: Configure and activate a Catalog
 
 Going back to the PIM we have to enable the catalog for our app.
-Adding a filter on the family to retrieve only the products we wants.
+Adding a filter on the criteria of our choice to retrieve only the products we want to address.
 
-## Step 6: Install Third-Party API Client and add Service Account configuration
+## 6: Install Third-Party API Client and add Service Account configuration
 
 ### Add the google/cloud-vision dependency
 
@@ -108,21 +109,20 @@ Follow the steps below to integrate the client into your project:
 
 Now you have successfully installed the Third-Party API client for addressing the Google AI Generative API within your Dockerized Akeneo PIM app. Proceed to the next steps to configure and utilize this client within your custom app.
 
-### install Google Cloud Service Account
+### Add a Google Cloud Service Account configuration file
 in order to request the Google Cloud Vision API, the Google Client should be authenticated, 
-to do so we will use a Service account that has rights to request the Google Cloud Vision Service.
+to do so we will use a Service account that has rights to request the Google Cloud Vision APIs.
 We will provide you it's content for the time of the workshop.
 
 Copy the service account credentials json key into a ***service_account.json*** file at the root of the project.
 
-
-## Step 7 : Coding
+## 7 : Coding
 
 In order to cover the use case presented in the introduction we will code a few things.
 All that we will need to do will be centralized in a single Service Class : GoogleVisionService
 the central method is detectLabelsOnProductImages, in that method we request the products through the catalog connection.
 Foreach products that have their packshot asset collection described do the following :
-- 3.1 Extract the image
+### 7.1 Extract the image
 in the **extractAssetImage** method implement the download of an asset content through the api
 ````php
 private function extractAssetImage(AkeneoPimClientInterface $client, string $assetDataCode)
@@ -144,7 +144,7 @@ $mediaContent ='';
      return $tempFile;
 }
 ````
-- 3.2 Call the Google Vision Service to detect labels over the image
+### 7.2 Call the Google Vision Service to detect labels over the image
 the method **getLabelsForImage** receives an image path as argument. 
 Code the little logic to call the Google Vision API to retrieve the labels and store them in the result array.
 ````php
@@ -167,7 +167,12 @@ Code the little logic to call the Google Vision API to retrieve the labels and s
         return $result;
     }
 ````
-- 3.3 Update the product product_tags attribute with the detected labels value by using the API client
+
+### 7.3 Update the product with the labels
+ 
+ the Product attribute to update is the product_tags attribute, 
+ we should use the implode function to concatenate the array of the detected labels, assign the string result to the en_US locale and ecommerce scope
+ And then pushing the new product values by using the API client
 
 ````php
 
