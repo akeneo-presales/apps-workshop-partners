@@ -6,6 +6,9 @@ in order to extract labels from product images and assign these identified label
 
 ![diagram.png](diagram.png)
 
+# Custom App Components
+
+![image](https://github.com/akeneo-presales/apps-workshop-partners/assets/3144589/95fdb60a-3f4f-46a4-8047-371c498436f9)
 
 ## 1 - Initialization : 
 
