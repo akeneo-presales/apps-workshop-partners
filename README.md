@@ -116,9 +116,9 @@ Follow the steps below to integrate the client into your project:
 1. Open your terminal or command prompt.
 2. Run the following command within your Docker container to install the Google AI Generative API client using Composer:
 
-    ``bash
+    ```shell
     docker exec -it workshopApp_web composer require google/cloud-vision
-    ``
+    ```
 
 Now you have successfully installed the Third-Party API client for addressing the Google AI Generative API within your Dockerized Akeneo PIM app. Proceed to the next steps to configure and utilize this client within your custom app.
 
