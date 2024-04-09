@@ -148,8 +148,9 @@ $mediaContent ='';
       * store these data into the mediaContent var
       * See this documentation to find out how to do it
       * https://api.akeneo.com/php-client/resources.html#asset-media-file
+      * and https://api.akeneo.com/php-client/resources.html#download-media-file
       */
-     $mediaContent = '???';
+     $mediaContent = '???'; //<-- binary data of the asset image
 
      $tempFile = tempnam('/tmp', 'assetGoogleVision');
      file_put_contents($tempFile, $mediaContent);
