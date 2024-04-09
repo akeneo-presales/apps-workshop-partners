@@ -135,7 +135,7 @@ In order to cover the use case presented in the introduction we will code a few 
 All that we will need to do will be centralized in a single Service Class : GoogleVisionService
 the central method is detectLabelsOnProductImages, in that method we request the products through the catalog connection.
 Foreach products that have their packshot asset collection described do the following :
-### 7.1 Extract the image
+### 6.1 Extract the image
 in the **extractAssetImage** method implement the download of an asset content through the api
 ````php
 private function extractAssetImage(AkeneoPimClientInterface $client, string $assetDataCode)
@@ -157,7 +157,7 @@ $mediaContent ='';
      return $tempFile;
 }
 ````
-### 7.2 Call the Google Vision Service to detect labels over the image
+### 6.2 Call the Google Vision Service to detect labels over the image
 the method **getLabelsForImage** receives an image path as an argument. 
 Code the little logic to call the Google Vision API to retrieve the labels and store them in the result array.
 ````php
@@ -181,7 +181,7 @@ Code the little logic to call the Google Vision API to retrieve the labels and s
     }
 ````
 
-### 7.3 Update the product with the labels
+### 6.3 Update the product with the labels
  
  the Product attribute to update is the product_tags attribute, 
  we should use the implode function to concatenate the array of the detected labels, assign the string result to the en_US locale and ecommerce scope
