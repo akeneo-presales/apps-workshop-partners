@@ -59,6 +59,7 @@ In our case we need to complete the list by adding the following scopes :
 -  Write Catalogs,
 -  Read locales and currencies,
 -  Read channels
+
 Check the documentation to find out the missing scopes: https://api.akeneo.com/apps/authentication-and-authorization.html#available-authorization-scopes
 
 ````php
