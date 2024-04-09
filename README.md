@@ -10,20 +10,21 @@ in order to extract labels from product images and assign these identified label
 ## 1 - Initialization : 
 
 ### Checkout the Demo App Skeleton :
-In this step, you'll need to download the latest Release from the Akeneo PIM Workshop App from the provided GitHub repository. 
+In this step, you'll have to download the latest Release from the Akeneo PIM Workshop App from the provided GitHub repository. 
 This app will serve as the foundation for your custom app.
 Follow the steps below to get started:
 
 ### Prerequisites
 
-Before you begin, ensure that you have the following installed on your development environment:
+Before you begin, ensure that the following components are installed in your development environment:
 
 * Docker Desktop : https://www.docker.com/products/docker-desktop/ : Once installed  => start it
 * NGrok : [installation](https://ngrok.com/download)
+* Archive manager : 7zip, Unarchiver
 
-### Steps
-1. Download the latest release of the Akeneo PIM Workshop App repository from that url https://github.com/akeneo-presales/WorkshopCustomApp/releases
-2. Unzip the archive
+### Retrieve, install, and start the Custom App
+1. Download the latest release of the Akeneo PIM Workshop App from that URL: https://github.com/akeneo-presales/apps-workshop-partners/releases/download/v1.4/WorkshopAppV1.4.tar.gz
+2. Uncompress the archive
 3. Open your terminal or command prompt.
 4. Navigate to the directory where you have uncompressed the project archive.
 5. Start the docker stack by running the following script from the project root directory :
@@ -41,41 +42,39 @@ Before you begin, ensure that you have the following installed on your developme
     ```
 6. Check that the app is running by opening the following url : http://localhost:8044
 
-## 2 - Connect the app to your PIM
+## 2 - Configure the OAuth Scopes required by the App
 
-### Requirements:
-- You have a [PIM developer sandbox](https://api.akeneo.com/apps/overview.html#app-developer-starter-kit)
-- Your Custom APP is accessible from the PIM. To Open your local App to the Internet we will use [NGROK](https://ngrok.com/download).
-
-### Steps:
-- Run Ngrok to obtain a temporary public URL for your local app, to do so run : ``ngrok http 8044``!
-![ngrok.png](ngrok.png)
-- [Register your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-3-declare-your-local-app-as-a-custom-app-in-your-sandbox-to-generate-credentials) to generates and receive the credentials, the activate url is : https://your-ngrok-url/ and the callback url is https://your-ngrok-url/callback
-- Once the app registered in the PIM, you can [Connect to your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-4-run-your-local-app)
-- then you will be prompted to register your PIM environment by providing the client id and the client secret you get on the previous step
-
-## 3: Create a Catalog for the App
-
-Explanation of what is a catalog
-
-## 4 - Configure the OAuth Scopes required by the App
-
-An Akeneo Custom App should declare the OAuth scopes that are needed for its execution.
+An Akeneo Custom App should declare the OAuth scopes needed for its execution.
+Because the App will access different facets of the PIM we should ensure that the users are aware of it and approve or reject it during the app declaration process.
 These scopes are declared In the Activate step.
-Edit the ActivateAction Controller class where you'll find all the informations about it
+Edit the ActivateAction Controller PHP class under the src/Controller/ActivateAction.php path to add the missing scopes for our app to work properly.
+
+In our case we need to complete the list by adding the following scopes :
+-  Read products,
+-  Write products,
+-  Read assets,
+-  Read asset families,
+-  Read catalog Structure,
+-  Read Catalogs,
+-  Write Catalogs,
+-  Read locales and currencies,
+-  Read channels
+Check the documentation to find out the missing scopes: https://api.akeneo.com/apps/authentication-and-authorization.html#available-authorization-scopes
 
 ````php
 final class ActivateAction extends AbstractController
 {
     /* List the oAuth scopes required by your app
     In our case we need to complete the list by adding the following scopes :
-    Read products
-    Write products,
-    Read assets
-    Read asset families,
-    Read calalog Structure,
-    Read Catalogs,
-    Write Catalogs
+    -  Read products,
+    -  Write products,
+    -  Read assets,
+    -  Read asset families,
+    -  Read catalog Structure,
+    -  Read Catalogs,
+    -  Write Catalogs,
+    -  Read locales and currencies,
+    -  Read channels
     See the documentation here to find out the missing scopes:
     https://api.akeneo.com/apps/authentication-and-authorization.html#available-authorization-scopes
 */
@@ -88,12 +87,25 @@ final class ActivateAction extends AbstractController
 
 ````
 
-## 5: Configure and activate a Catalog
+## 3 - Connect the App to your PIM
+
+### Requirements:
+- You have a [PIM developer sandbox](https://api.akeneo.com/apps/overview.html#app-developer-starter-kit)
+- Your Custom APP is accessible from the PIM.
+
+### Steps:
+- Run [NGROK](https://ngrok.com/download) to obtain a temporary public URL for your local app, to do so run: ``ngrok http 8044``!
+![ngrok.png](ngrok.png)
+- [Register your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-3-declare-your-local-app-as-a-custom-app-in-your-sandbox-to-generate-credentials) to generates and receive the credentials, the activate URL is : https://your-ngrok-url/ and the callback URL is https://your-ngrok-url/callback
+- Once the app is registered in the PIM, you can [Connect to your app](https://api.akeneo.com/tutorials/how-to-get-your-app-token.html#step-4-run-your-local-app)
+- then you will be prompted to register your PIM environment by providing the Client ID and the Client Secret you get in the previous step
+
+## 4: Create a Catalog for the App
 
 Going back to the PIM we have to enable the catalog for our app.
 Adding a filter on the criteria of our choice to retrieve only the products we want to address.
 
-## 6: Install Third-Party API Client and add Service Account configuration
+## 5: Install Third-Party API Client and add Service Account configuration
 
 ### Add the google/cloud-vision dependency
 
@@ -116,7 +128,7 @@ We will provide you it's content for the time of the workshop.
 
 Copy the service account credentials json key into a ***service_account.json*** file at the root of the project.
 
-## 7 : Coding
+## 6 : Coding
 
 In order to cover the use case presented in the introduction we will code a few things.
 All that we will need to do will be centralized in a single Service Class : GoogleVisionService
@@ -145,7 +157,7 @@ $mediaContent ='';
 }
 ````
 ### 7.2 Call the Google Vision Service to detect labels over the image
-the method **getLabelsForImage** receives an image path as argument. 
+the method **getLabelsForImage** receives an image path as an argument. 
 Code the little logic to call the Google Vision API to retrieve the labels and store them in the result array.
 ````php
  private function getLabelsForImage($imagePath)
@@ -203,4 +215,4 @@ Code the little logic to call the Google Vision API to retrieve the labels and s
 
 All products have a **packshot** asset_collection attribute which handles the product images.
 
-Also a **product_tags** textarea attribute has been also added, this field will receive the detected labels from the app.
+Also, a **product_tags** textarea attribute has been also added, this field will receive the detected labels from the app.
